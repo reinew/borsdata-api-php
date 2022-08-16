@@ -8,7 +8,7 @@
 
 // Give input from commandline or url to choose function 1-15.
 // $: php test.php function=<number of the function>
-// http(s)://<url>/test.php?cunction=<number of the function>
+// http(s)://<url>/test.php?function=<number of the function>
 
 header('Content-type: application/json');
 
@@ -30,21 +30,23 @@ $borsdata = new Borsdata();
 $borsdata->set_apikey('');
 
 // Parameters for functions.
-$instrument = "instruments"; // branches, countries, markets, sectors, translationmetadata
-$insId = 2; // Get all id's from get_all_instruments() function with parameter instruments.
-$kpiId = 1; // Get all id's from get_kpi_metadata() function.
-$reportType = "year"; // year, quarter, r12
-$priceType = "mean"; // low, mean, high
+$instrument = "instruments"; // Options: branches, countries, markets, sectors, instruments, translationmetadata
+$insId = "2"; // Get all different id's with the get_all_instruments('instruments') function.
+$kpiId = "1"; // Get all different id's with the get_kpi_metadata() function.
+$reportType = "year"; // Options: year, quarter, r12
+$priceType = "mean"; // Options: low, mean, high
 $calcGroup = "last"; // For KPI-Screener, for more info about the parameter, see link below.
 $calc = "latest"; // For KPI-Screener, for more info about the parameter, see link below.
-$from = "2019-01-01"; // For stockprice history.
-$to = "2019-12-31"; // For stockprice history.
-$maxCount = 10; // 10 default. year=20 max, r12 & quarter=40 max
-$maxYearCount = 10; // default 10, max 20
-$maxR12Count = 10; // default 10, max 40
+$from = "2019-01-01"; // For stockprice history. (optional, can be empty)
+$to = "2019-12-31"; // For stockprice history. (optional, can be empty)
+$maxCount = "10"; // 10 default. year=20 max, r12 & quarter=40 max. (optional, can be empty)
+$maxYearCount = "10"; // 10 default, 20 max.
+$maxR12Count = "10"; // 10 default, 40 max.
 $date = "2022-08-15"; // For stockprices date.
 
-// Examples for getting data from the different functions and print out the array.
+// Examples for getting data from the different functions and print out the resulting array.
+// All parameters in the function is required for the function to work properly.
+// If any optional parameter should be empty, set that parameter to ""
 
 // Instruments: https://github.com/Borsdata-Sweden/API/wiki/Instruments
 if ($function == 1 ) { print_r($borsdata->get_all_instruments($instrument)); }
