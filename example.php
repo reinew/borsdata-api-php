@@ -11,7 +11,7 @@ header('Content-type: application/json');
 // returns an array of all instruments and prints the result in json format.
 
 // Import the API class file.
-require_once 'apiClass.php';
+require_once 'Borsdata.php';
 
 // Initiate functions for Borsdata API.
 $borsdata = new Borsdata();

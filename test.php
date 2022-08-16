@@ -21,7 +21,7 @@ if (isset($argv)) {
 }
 
 // Import the API class file.
-require_once 'apiClass.php';
+require_once 'Borsdata.php';
 
 // Initiate the API class.
 $borsdata = new Borsdata();
