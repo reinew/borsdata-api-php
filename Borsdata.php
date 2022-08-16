@@ -108,7 +108,7 @@ class Borsdata {
         } elseif (!empty($from) && !empty($to) ) {
             $endpoint = "instruments/$insId/stockprices?authKey=$this->key&from=$from&to=$to&maxCount=$maxCount";
         } else {
-            $endpoint = "instruments/$insId/stockprices?authKey=$this->key&from=$from&to=$to&maxCount=$maxCount";
+            $endpoint = "instruments/$insId/stockprices?authKey=$this->key&maxCount=$maxCount";
         }
         return $this->get_from_api($endpoint);
     }
