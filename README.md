@@ -24,4 +24,4 @@ https://apidoc.borsdata.se/swagger/index.html
 
 ---
 
-Please report any issues, bugs or ideas [here]().
+Please report any issues, bugs or ideas [here](https://github.com/reinew/borsdata-api/issues).
