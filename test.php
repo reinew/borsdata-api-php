@@ -41,7 +41,7 @@ $from = "2019-01-01"; // For stockprice history. (optional, can be empty)
 $to = "2019-12-31"; // For stockprice history. (optional, can be empty)
 $maxCount = "10"; // 10 default. year=20 max, r12 & quarter=40 max. (optional, can be empty)
 $maxYearCount = "10"; // 10 default, 20 max.
-$maxR12Count = "10"; // 10 default, 40 max.
+$maxR12QCount = "10"; // 10 default, 40 max.
 $date = "2022-08-15"; // For stockprices date.
 $instList = "2,3,5"; // List of instrument id's.
 
@@ -66,8 +66,8 @@ if ($function == 9 ) { print_r($borsdata->get_kpi_metadata()); }
 
 // Reports: https://github.com/Borsdata-Sweden/API/wiki/Reports
 if ($function == 10 ) { print_r($borsdata->get_reports_by_type($insId, $reportType, $maxCount)); }
-if ($function == 11) { print_r($borsdata->get_reports_for_all_types($insId, $maxYearCount, $maxR12Count)); }
-if ($function == 12) { print_r($borsdata->get_all_reports($instList)); }
+if ($function == 11) { print_r($borsdata->get_reports_for_all_types($insId, $maxYearCount, $maxR12QCount)); }
+if ($function == 12) { print_r($borsdata->get_all_reports($instList, $maxYearCount, $maxR12QCount)); }
 if ($function == 13) { print_r($borsdata->get_reports_metadata()); }
 
 // Stockprice: https://github.com/Borsdata-Sweden/API/wiki/Stockprice

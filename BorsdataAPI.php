@@ -86,13 +86,13 @@ class BorsdataAPI {
     }
 
     // Returns Reports for one Instrument, All Reports Type included. (year, r12, quarter)
-    function get_reports_for_all_types($insId, $maxYearCount, $maxR12Count) {
-        if (!empty($maxYearCount) && empty($maxR12Count)) {
+    function get_reports_for_all_types($insId, $maxYearCount, $maxR12QCount) {
+        if (!empty($maxYearCount) && empty($maxR12QCount)) {
             $endpoint = "instruments/$insId/reports?authKey=$this->key&$maxYearCount";
-        } elseif (empty($maxYearCount) && !empty($maxR12Count)) {
-            $endpoint = "instruments/$insId/reports?authKey=$this->key&$maxR12Count";
-        } elseif (!empty($maxYearCount) && !empty($maxR12Count)) {
-            $endpoint = "instruments/$insId/reports?authKey=$this->key&$maxYearCount&$maxR12Count";
+        } elseif (empty($maxYearCount) && !empty($maxR12QCount)) {
+            $endpoint = "instruments/$insId/reports?authKey=$this->key&$maxR12QCount";
+        } elseif (!empty($maxYearCount) && !empty($maxR12QCount)) {
+            $endpoint = "instruments/$insId/reports?authKey=$this->key&$maxYearCount&$maxR12QCount";
         } else {
             $endpoint = "instruments/$insId/reports?authKey=$this->key";
         }
@@ -100,8 +100,16 @@ class BorsdataAPI {
     }
 
     // Returns all Reports from list of Instruments.
-    function get_all_reports($instList) {
-        $endpoint = "instruments/reports?authKey=$this->key&instList=$instList";
+    function get_all_reports($instList, $maxYearCount, $maxR12QCount) {
+        if (!empty($maxYearCount) && empty($maxR12QCount)) {
+            $endpoint = "instruments/reports?authKey=$this->key&instList=$instList&maxYearCount=$maxYearCount";
+        } elseif (empty($maxYearCount) && !empty($maxR12QCount)) {
+            $endpoint = "instruments/reports?authKey=$this->key&instList=$instList&maxR12QCount=$maxR12QCount";
+        } elseif (!empty($maxYearCount) && !empty($maxR12QCount)) {
+            $endpoint = "instruments/reports?authKey=$this->key&instList=$instList&maxYearCount=$maxYearCount&maxR12QCount=$maxR12QCount";
+        } else {
+            $endpoint = "instruments/reports?authKey=$this->key&instList=$instList";
+        }
         return $this->get_data_from_api($endpoint);
     }
 
