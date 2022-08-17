@@ -6,7 +6,7 @@
 // All programs contained herein are provided to you “AS IS” without any warranties of any kind.
 
 
-// Give input from commandline or url to choose function 1-15.
+// Give input from commandline or url to choose function 1-18.
 // $: php test.php function=<number of the function>
 // http(s)://<url>/test.php?function=<number of the function>
 
@@ -21,12 +21,12 @@ if (isset($argv)) {
 }
 
 // Import the API class file.
-require_once 'Borsdata.php';
+require_once 'BorsdataAPI.php';
 
 // Initiate the API class.
-$borsdata = new Borsdata();
+$borsdata = new BorsdataAPI();
 
-// Set the api key.
+// Set the api key. (Add your API key before testing)
 $borsdata->set_apikey('');
 
 // Parameters for functions.
@@ -43,6 +43,7 @@ $maxCount = "10"; // 10 default. year=20 max, r12 & quarter=40 max. (optional, c
 $maxYearCount = "10"; // 10 default, 20 max.
 $maxR12Count = "10"; // 10 default, 40 max.
 $date = "2022-08-15"; // For stockprices date.
+$instList = "2,3,5"; // List of instrument id's.
 
 // Examples for getting data from the different functions and print out the resulting array.
 // All parameters in the function is required for the function to work properly.
@@ -55,24 +56,27 @@ if ($function == 2 ) { print_r($borsdata->get_all_updated_instruments()); }
 // KPI History: https://github.com/Borsdata-Sweden/API/wiki/KPI-History
 if ($function == 3 ) { print_r($borsdata->get_kpi_history($insId, $kpiId, $reportType, $priceType, $maxCount)); }
 if ($function == 4 ) { print_r($borsdata->get_kpi_summary($insId, $reportType, $maxCount)); }
+if ($function == 5 ) { print_r($borsdata->get_historical_kpis($kpiId, $reportType, $priceType, $instList)); }
 
 // KPI Screener: https://github.com/Borsdata-Sweden/API/wiki/KPI-Screener
-if ($function == 5 ) { print_r($borsdata->get_kpidata_for_one_instrument($insId, $kpiId, $calcGroup, $calc)); }
-if ($function == 6 ) { print_r($borsdata->get_kpidata_for_all_instruments($kpiId, $calcGroup, $calc)); }
-if ($function == 7 ) { print_r($borsdata->get_kpi_updated()); }
-if ($function == 8 ) { print_r($borsdata->get_kpi_metadata()); }
+if ($function == 6 ) { print_r($borsdata->get_kpidata_for_one_instrument($insId, $kpiId, $calcGroup, $calc)); }
+if ($function == 7 ) { print_r($borsdata->get_kpidata_for_all_instruments($kpiId, $calcGroup, $calc)); }
+if ($function == 8 ) { print_r($borsdata->get_kpi_updated()); }
+if ($function == 9 ) { print_r($borsdata->get_kpi_metadata()); }
 
 // Reports: https://github.com/Borsdata-Sweden/API/wiki/Reports
-if ($function == 9 ) { print_r($borsdata->get_reports_by_type($insId, $reportType, $maxCount)); }
-if ($function == 10) { print_r($borsdata->get_reports_for_all_types($insId, $maxYearCount, $maxR12Count)); }
-if ($function == 11) { print_r($borsdata->get_reports_metadata()); }
+if ($function == 10 ) { print_r($borsdata->get_reports_by_type($insId, $reportType, $maxCount)); }
+if ($function == 11) { print_r($borsdata->get_reports_for_all_types($insId, $maxYearCount, $maxR12Count)); }
+if ($function == 12) { print_r($borsdata->get_all_reports($instList)); }
+if ($function == 13) { print_r($borsdata->get_reports_metadata()); }
 
 // Stockprice: https://github.com/Borsdata-Sweden/API/wiki/Stockprice
-if ($function == 12) { print_r($borsdata->get_stockprices_for_instrument($insId, $from, $to, $maxCount)); }
-if ($function == 13) { print_r($borsdata->get_last_stockprices()); }
-if ($function == 14) { print_r($borsdata->get_stockprices_for_date($date)); }
+if ($function == 14) { print_r($borsdata->get_stockprices_for_instrument($insId, $from, $to, $maxCount)); }
+if ($function == 15) { print_r($borsdata->get_last_stockprices()); }
+if ($function == 16) { print_r($borsdata->get_stockprices_for_date($date)); }
+if ($function == 17) { print_r($borsdata->get_historical_stockprices($instList, $from, $to)); }
 
 // Stock splits: Max 1 year history.
-if ($function == 15) { print_r($borsdata->get_stocksplits()); }
+if ($function == 18) { print_r($borsdata->get_stocksplits()); }
 
 ?>

@@ -11,12 +11,12 @@ header('Content-type: application/json');
 // returns an array of all instruments and prints the result in json format.
 
 // Import the API class file.
-require_once 'Borsdata.php';
+require_once 'BorsdataAPI.php';
 
-// Initiate functions for Borsdata API.
-$borsdata = new Borsdata();
+// Initiate functions from Borsdata API class.
+$borsdata = new BorsdataAPI();
 
-// Set the api key.
+// Set the api key. (Add your API key before testing)
 $borsdata->set_apikey('');
 
 // Make the API call.
