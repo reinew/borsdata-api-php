@@ -32,10 +32,27 @@ class BorsdataAPI
   // Main function that gets called and fetches chosen data from the API.
   function get_data_from_api($endpoint)
   {
-    $url = $this->base_url . '/' . $this->version . '/' . $endpoint;
-    $result = json_decode(file_get_contents($url), true);
-    sleep($this->sleep);
-    return $result;
+    try {
+      $url = $this->base_url . '/' . $this->version . '/' . $endpoint;
+      $context = stream_context_create([
+        'http' => [
+          'ignore_errors' => true
+        ]
+      ]);
+      $response = file_get_contents($url, false, $context);
+      $httpCode = explode(' ', $http_response_header[0])[1];
+      $httpError = explode(' ', $http_response_header[0])[2];
+      if ($httpCode == '200') {
+        $result = json_decode($response, true);
+        sleep($this->sleep);
+        return $result;
+      } else {
+        throw new Exception("API request failed with HTTP status code $httpCode ($httpError)\n");
+      }
+    } catch (Exception $e) {
+      echo $e->getMessage();
+      die();
+    }
   }
 
   // Returns all Instruments and Instrument Meta.
