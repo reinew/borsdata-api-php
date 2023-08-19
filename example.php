@@ -7,7 +7,7 @@
 
 header('Content-type: application/json');
 
-// This simple example imports the API class file, intiates the class, \
+// This simple example imports the API class file, initiates the class, \
 // returns an array of all instruments and prints the result in json format.
 
 // Import the API class file.
@@ -16,13 +16,8 @@ require_once 'BorsdataAPI.php';
 // Initiate functions from Borsdata API class.
 $borsdata = new BorsdataAPI();
 
-// Set the api key. (Add your API key before testing)
-$borsdata->set_apikey('');
-
 // Make the API call.
-$data = $borsdata->get_all_instruments("instruments");
+$data = $borsdata->get_all_instruments('instruments');
 
 // Print in json format for all instruments.
 echo json_encode($data, JSON_PRETTY_PRINT);
-
-?>
