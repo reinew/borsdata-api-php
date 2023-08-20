@@ -55,10 +55,17 @@ class BorsdataAPI
     }
   }
 
-  // Returns all Instruments and Instrument Meta.
-  function get_all_instruments($instrument)
+  // Returns all Instruments or Instrument Meta.
+  function get_all_instruments($instruments)
   {
-    $endpoint = "$instrument?authKey=$this->key";
+    $endpoint = "$instruments?authKey=$this->key";
+    return $this->get_data_from_api($endpoint);
+  }
+
+  // Returns all Global Instruments.
+  function get_all_global_instruments()
+  {
+    $endpoint = "instruments/global?authKey=$this->key";
     return $this->get_data_from_api($endpoint);
   }
 
@@ -101,6 +108,13 @@ class BorsdataAPI
   function get_kpidata_for_all_instruments($kpiId, $calcGroup, $calc)
   {
     $endpoint = "instruments/kpis/$kpiId/$calcGroup/$calc?authKey=$this->key";
+    return $this->get_data_from_api($endpoint);
+  }
+
+  // Returns Kpis Data for all Global Instruments.
+  function get_kpidata_for_all_global_instruments($kpiId, $calcGroup, $calc)
+  {
+    $endpoint = "instruments/global/kpis/$kpiId/$calcGroup/$calc?authKey=$this->key";
     return $this->get_data_from_api($endpoint);
   }
 
@@ -184,10 +198,24 @@ class BorsdataAPI
     return $this->get_data_from_api($endpoint);
   }
 
+  // Returns Last StockPrices for all Global Instruments.
+  function get_last_global_stockprices()
+  {
+    $endpoint = "instruments/stockprices/global/last?authKey=$this->key";
+    return $this->get_data_from_api($endpoint);
+  }
+
   // Returns one StockPrice for each Instrument for a specific date.
   function get_stockprices_for_date($date)
   {
     $endpoint = "instruments/stockprices/date?authKey=$this->key&date=$date";
+    return $this->get_data_from_api($endpoint);
+  }
+
+  // Returns one StockPrice for each Global Instrument for a specific date.
+  function get_global_stockprices_for_date($date)
+  {
+    $endpoint = "instruments/stockprices/global/date?authKey=$this->key&date=$date";
     return $this->get_data_from_api($endpoint);
   }
 
