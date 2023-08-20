@@ -5,6 +5,8 @@
 // The creator cannot guarantee or imply reliability, serviceability, or function of these programs.
 // All programs contained herein are provided to you “AS IS” without any warranties of any kind.
 
+// Please be advised that functions for global instruments require a pro+ subscription.
+
 class BorsdataAPI
 {
 
@@ -46,6 +48,8 @@ class BorsdataAPI
         $result = json_decode($response, true);
         sleep($this->sleep);
         return $result;
+      } elseif ($httpCode == '418') {
+        throw new Exception("API request failed with HTTP status code 418 (No global access)\n");
       } else {
         throw new Exception("API request failed with HTTP status code $httpCode ($httpError)\n");
       }
