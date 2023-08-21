@@ -15,6 +15,8 @@ and take a look in <test.php> for all possible calls more in depth. \
 But first, create a .env file in the same folder as the class file, and add your API key on a single line.
 > API_KEY="\<your api key goes here\>"
 
+---
+
 For more info about the API: \
 Borsdata's github wiki. \
 https://github.com/Borsdata-Sweden/API/wiki

@@ -17,7 +17,7 @@ require_once 'BorsdataAPI.php';
 $borsdata = new BorsdataAPI();
 
 // Make the API call.
-$data = $borsdata->get_all_instruments('instruments');
+$data = $borsdata->getAllInstruments('instruments');
 
 // Print in json format for all instruments.
 echo json_encode($data, JSON_PRETTY_PRINT);

@@ -10,10 +10,10 @@
 class BorsdataAPI
 {
 
-  private $base_url = 'https://apiservice.borsdata.se';
-  private $version = 'v1';
+  private $BASEURL = 'https://apiservice.borsdata.se';
+  private $VERSION = 'v1';
   private $key;
-  private $sleep = 0.11; // Max 100 requests allowed per 10s.
+  private $SLEEP = 0.11; // Max 100 requests allowed per 10s.
 
   // Getting the API key from a .env file.
   public function __construct()
@@ -21,21 +21,21 @@ class BorsdataAPI
     try {
       $envFile = __DIR__ . '/.env';
       if (!file_exists($envFile)) {
-        throw new Exception("The .env file is missing, please create one and add your API_KEY.");
+        throw new Exception("The .env file is missing, please create one and add your API_KEY.\n");
       }
       $dotEnv = parse_ini_file(__DIR__ . '/.env');
-      $this->key = $dotEnv['API_KEY'] ?? throw new Exception("API_KEY key is missing in .env file.");
-    } catch (Exception $e) {
-      echo $e->getMessage() . "\n";
+      $this->key = $dotEnv['API_KEY'] ?? throw new Exception("API_KEY key is missing in .env file.\n");
+    } catch (Exception $error) {
+      echo $error->getMessage();
       die();
     }
   }
 
   // Main function that gets called and fetches chosen data from the API.
-  function get_data_from_api($endpoint)
+  function getDataFromApi($endpoint)
   {
     try {
-      $url = $this->base_url . '/' . $this->version . '/' . $endpoint;
+      $url = $this->BASEURL . '/' . $this->VERSION . '/' . $endpoint;
       $context = stream_context_create([
         'http' => [
           'ignore_errors' => true
@@ -43,108 +43,108 @@ class BorsdataAPI
       ]);
       $response = file_get_contents($url, false, $context);
       $httpCode = explode(' ', $http_response_header[0])[1];
-      $httpError = explode(' ', $http_response_header[0])[2];
+      $httpResponse = explode(' ', $http_response_header[0])[2];
       if ($httpCode == '200') {
         $result = json_decode($response, true);
-        sleep($this->sleep);
+        sleep($this->SLEEP);
         return $result;
       } elseif ($httpCode == '418') {
         throw new Exception("API request failed with HTTP status code 418 (No global access)\n");
       } else {
-        throw new Exception("API request failed with HTTP status code $httpCode ($httpError)\n");
+        throw new Exception("API request failed with HTTP status code $httpCode ($httpResponse)\n");
       }
-    } catch (Exception $e) {
-      echo $e->getMessage();
+    } catch (Exception $error) {
+      echo $error->getMessage();
       die();
     }
   }
 
   // Returns all Instruments or Instrument Meta.
-  function get_all_instruments($instruments)
+  function getAllInstruments($instruments)
   {
     $endpoint = "$instruments?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns all Global Instruments.
-  function get_all_global_instruments()
+  function getAllGlobalInstruments()
   {
     $endpoint = "instruments/global?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns all Updated Instruments.
-  function get_all_updated_instruments()
+  function getAllUpdatedInstruments()
   {
     $endpoint = "instruments/updated?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Kpis History.
-  function get_kpi_history($insId, $kpiId, $reportType, $priceType, $maxCount)
+  function getKpiHistory($insId, $kpiId, $reportType, $priceType, $maxCount)
   {
     $endpoint = "instruments/$insId/kpis/$kpiId/$reportType/$priceType/history?authKey=$this->key&maxCount=$maxCount";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Kpis summary list.
-  function get_kpi_summary($insId, $reportType, $maxCount)
+  function getKpiSummary($insId, $reportType, $maxCount)
   {
     $endpoint = "instruments/$insId/kpis/$reportType/summary?authKey=$this->key&maxCount=$maxCount";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns historical Kpis Data from list of Instruments.
-  function get_historical_kpis($kpiId, $reportType, $priceType, $instList)
+  function getHistoricalKpis($kpiId, $reportType, $priceType, $instList)
   {
     $endpoint = "instruments/kpis/$kpiId/$reportType/$priceType/history?authKey=$this->key&instList=$instList";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Kpis Data for one Instrument.
-  function get_kpidata_for_one_instrument($insId, $kpiId, $calcGroup, $calc)
+  function getKpidataForOneInstrument($insId, $kpiId, $calcGroup, $calc)
   {
     $endpoint = "instruments/$insId/kpis/$kpiId/$calcGroup/$calc?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Kpis Data for all Instruments.
-  function get_kpidata_for_all_instruments($kpiId, $calcGroup, $calc)
+  function getKpidataForAllInstruments($kpiId, $calcGroup, $calc)
   {
     $endpoint = "instruments/kpis/$kpiId/$calcGroup/$calc?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Kpis Data for all Global Instruments.
-  function get_kpidata_for_all_global_instruments($kpiId, $calcGroup, $calc)
+  function getKpidataForAllGlobalInstruments($kpiId, $calcGroup, $calc)
   {
     $endpoint = "instruments/global/kpis/$kpiId/$calcGroup/$calc?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Kpis Calculation DateTime.
-  function get_kpi_updated()
+  function getKpiUpdated()
   {
     $endpoint = "instruments/kpis/updated?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Kpis metadata.
-  function get_kpi_metadata()
+  function getKpiMetadata()
   {
     $endpoint = "instruments/kpis/metadata?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Reports for one Instrument.
-  function get_reports_by_type($insId, $reportType, $maxCount)
+  function getReportsByType($insId, $reportType, $maxCount)
   {
     $endpoint = "instruments/$insId/reports/$reportType?authKey=$this->key&maxCount=$maxCount";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Reports for one Instrument, All Reports Type included. (year, r12, quarter)
-  function get_reports_for_all_types($insId, $maxYearCount, $maxR12QCount)
+  function getReportsForAllTypes($insId, $maxYearCount, $maxR12QCount)
   {
     if (!empty($maxYearCount) && empty($maxR12QCount)) {
       $endpoint = "instruments/$insId/reports?authKey=$this->key&$maxYearCount";
@@ -155,11 +155,11 @@ class BorsdataAPI
     } else {
       $endpoint = "instruments/$insId/reports?authKey=$this->key";
     }
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns all Reports from list of Instruments.
-  function get_all_reports($instList, $maxYearCount, $maxR12QCount)
+  function getAllReports($instList, $maxYearCount, $maxR12QCount)
   {
     if (!empty($maxYearCount) && empty($maxR12QCount)) {
       $endpoint = "instruments/reports?authKey=$this->key&instList=$instList&maxYearCount=$maxYearCount";
@@ -170,18 +170,18 @@ class BorsdataAPI
     } else {
       $endpoint = "instruments/reports?authKey=$this->key&instList=$instList";
     }
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Report metadata.
-  function get_reports_metadata()
+  function getReportsMetadata()
   {
     $endpoint = "instruments/reports/metadata?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns StockPrices for one Instrument.
-  function get_stockprices_for_instrument($insId, $from, $to, $maxCount)
+  function getStockpricesForInstrument($insId, $from, $to, $maxCount)
   {
     if (!empty($from) && empty($to)) {
       $endpoint = "instruments/$insId/stockprices?authKey=$this->key&from=$from&maxCount=$maxCount";
@@ -192,39 +192,39 @@ class BorsdataAPI
     } else {
       $endpoint = "instruments/$insId/stockprices?authKey=$this->key&maxCount=$maxCount";
     }
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Last StockPrices for all Instruments.
-  function get_last_stockprices()
+  function getLastStockprices()
   {
     $endpoint = "instruments/stockprices/last?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Last StockPrices for all Global Instruments.
-  function get_last_global_stockprices()
+  function getLastGlobalStockprices()
   {
     $endpoint = "instruments/stockprices/global/last?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns one StockPrice for each Instrument for a specific date.
-  function get_stockprices_for_date($date)
+  function getStockpricesForDate($date)
   {
     $endpoint = "instruments/stockprices/date?authKey=$this->key&date=$date";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns one StockPrice for each Global Instrument for a specific date.
-  function get_global_stockprices_for_date($date)
+  function getGlobalStockpricesForDate($date)
   {
     $endpoint = "instruments/stockprices/global/date?authKey=$this->key&date=$date";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns historical StockPrices from list of Instruments.
-  function get_historical_stockprices($instList, $from, $to)
+  function getHistoricalStockprices($instList, $from, $to)
   {
     if (!empty($from) && empty($to)) {
       $endpoint = "instruments/stockprices?authKey=$this->key&instList=$instList&from=$from";
@@ -235,13 +235,13 @@ class BorsdataAPI
     } else {
       $endpoint = "instruments/stockprices?authKey=$this->key&instList=$instList";
     }
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 
   // Returns Stock Splits for all Instruments.
-  function get_stocksplits()
+  function getStocksplits()
   {
     $endpoint = "instruments/StockSplits?authKey=$this->key";
-    return $this->get_data_from_api($endpoint);
+    return $this->getDataFromApi($endpoint);
   }
 }
