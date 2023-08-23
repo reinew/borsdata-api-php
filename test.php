@@ -1,15 +1,19 @@
 <?php
 
-// All sample code is provided for illustrative purposes only.
-// These examples have not been thoroughly tested under all conditions.
-// The creator cannot guarantee or imply reliability, serviceability, or function of these programs.
-// All programs contained herein are provided to you “AS IS” without any warranties of any kind.
-
-// Give input from command line or url to choose function 1-22.
-// $: php test.php function=<number of the function>
-// http(s)://<base_url>/test.php?function=<number of the function>
-
-// Please be advised that functions for global data require a pro+ subscription.
+/**
+ * @author ReineW
+ * @license MIT
+ * @link https://github.com/reinew/borsdata-api
+ *
+ * All sample code is provided for illustrative purposes only.
+ * These examples have not been thoroughly tested under all conditions.
+ * The creator cannot guarantee or imply reliability, serviceability, or function of this class.
+ * All code contained herein are provided to you “AS IS” without any warranties of any kind.
+ *
+ * Give input from command line or url to choose function 1-22.
+ * $: php test.php function=<number of the function>
+ * http(s)://<base_url>/test.php?function=<number of the function>
+ */
 
 header('Content-type: application/json');
 
@@ -30,7 +34,7 @@ require_once 'BorsdataAPI.php';
 $borsdata = new BorsdataAPI();
 
 // Test parameters for functions.
-$instruments = "instruments"; // Options: branches, countries, markets, sectors, instruments, translationmetadata
+$option = "instruments"; // Options: branches, countries, markets, sectors, instruments, translationmetadata
 $insId = "2"; // Get all different id's with the get_all_instruments('instruments') function.
 $kpiId = "1"; // Get all different id's with the get_kpi_metadata() function.
 $reportType = "year"; // Options: year, quarter, r12
@@ -52,8 +56,8 @@ $instList = "2,3,6"; // List of instrument id's.
 $result = match ($function) {
 
   // Instruments: https://github.com/Borsdata-Sweden/API/wiki/Instruments
-  1 => $borsdata->getAllInstruments($instruments),
-  2 => $borsdata->getAllGlobalInstruments($instruments),
+  1 => $borsdata->getAllInstruments($option),
+  2 => $borsdata->getAllGlobalInstruments(),
   3 => $borsdata->getAllUpdatedInstruments(),
 
   // KPI History: https://github.com/Borsdata-Sweden/API/wiki/KPI-History
@@ -71,16 +75,16 @@ $result = match ($function) {
   // Reports: https://github.com/Borsdata-Sweden/API/wiki/Reports
   12 => $borsdata->getReportsByType($insId, $reportType, $maxCount),
   13 => $borsdata->getReportsForAllTypes($insId, $maxYearCount, $maxR12QCount),
-  14 => $borsdata->getAllReports($instList, $maxYearCount, $maxR12QCount),
-  15 => $borsdata->getReportsMetadata(),
+  14 => $borsdata->getReportsMetadata(),
+  15 => $borsdata->getAllReports($instList, $maxYearCount, $maxR12QCount),
 
   // Stock price: https://github.com/Borsdata-Sweden/API/wiki/Stockprice
   16 => $borsdata->getStockpricesForInstrument($insId, $from, $to, $maxCount),
-  17 => $borsdata->getLastStockprices(),
-  18 => $borsdata->getLastGlobalStockprices(),
-  19 => $borsdata->getStockpricesForDate($date),
-  20 => $borsdata->getGlobalStockpricesForDate($date),
-  21 => $borsdata->getHistoricalStockprices($instList, $from, $to),
+  17 => $borsdata->getStockPricesForListOfInstruments($instList, $from, $to),
+  18 => $borsdata->getLastStockprices(),
+  19 => $borsdata->getLastGlobalStockprices(),
+  20 => $borsdata->getStockpricesForDate($date),
+  21 => $borsdata->getGlobalStockpricesForDate($date),
 
   // Stock splits: Max 1 year history.
   22 => $borsdata->getStocksplits(),
@@ -88,4 +92,5 @@ $result = match ($function) {
   default => "No function selected\n",
 };
 
-print_r($result);
+// Print out the result in JSON format.
+echo json_encode($result, JSON_PRETTY_PRINT);

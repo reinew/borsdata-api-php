@@ -1,14 +1,22 @@
 <?php
 
-// All sample code is provided for illustrative purposes only.
-// These examples have not been thoroughly tested under all conditions.
-// The creator cannot guarantee or imply reliability, serviceability, or function of these programs.
-// All programs contained herein are provided to you “AS IS” without any warranties of any kind.
+/**
+ * @author ReineW
+ * @license MIT
+ * @link https://github.com/reinew/borsdata-api
+ *
+ * All sample code is provided for illustrative purposes only.
+ * These examples have not been thoroughly tested under all conditions.
+ * The creator cannot guarantee or imply reliability, serviceability, or function of this class.
+ * All code contained herein are provided to you “AS IS” without any warranties of any kind.
+ *
+ * This simple example imports the API class file, initiates the class,
+ * returns an object of all instruments and prints the result in json format.
+ *
+ * Run this script with the following command: php example.js
+ */
 
 header('Content-type: application/json');
-
-// This simple example imports the API class file, initiates the class, \
-// returns an array of all instruments and prints the result in json format.
 
 // Import the API class file.
 require_once 'BorsdataAPI.php';
