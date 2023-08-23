@@ -11,7 +11,7 @@
  * All code contained herein are provided to you “AS IS” without any warranties of any kind.
  *
  * Give input from command line or url to choose function 1-22.
- * $: php test.php function=<number of the function>
+ * $: php test.php <number of the function>
  * http(s)://<base_url>/test.php?function=<number of the function>
  */
 
@@ -19,11 +19,11 @@ header('Content-type: application/json');
 
 // Get parameters from command line or url.
 if (isset($argv[1])) {
-  $function = intval(explode('=', $argv[1])[1]);
+  $function = intval($argv[1]);
 } elseif (isset($_GET["function"])) {
   $function = isset($_GET["function"]) ? intval($_GET["function"]) : null;
 } else {
-  echo "Please enter a function number. for example via cli: 'php test.php function=1', or add for example '?function=1' to the url.\n";
+  echo "Please enter a function number between 1-22. for example via cli: 'php test.php 1', or add for example '?function=1' to the url.\n";
   die();
 }
 
@@ -35,17 +35,17 @@ $borsdata = new BorsdataAPI();
 
 // Test parameters for functions.
 $option = "instruments"; // Options: branches, countries, markets, sectors, instruments, translationmetadata
-$insId = "2"; // Get all different id's with the get_all_instruments('instruments') function.
-$kpiId = "1"; // Get all different id's with the get_kpi_metadata() function.
+$insId = "2"; // Get all different id's with the "getAllInstruments('instruments')" function.
+$kpiId = "1"; // Get all different id's with the "getKpiMetadata()" function.
 $reportType = "year"; // Options: year, quarter, r12
 $priceType = "mean"; // Options: low, mean, high
 $calcGroup = "last"; // For KPI-Screener, for more info about the parameter, see link below.
 $calc = "latest"; // For KPI-Screener, for more info about the parameter, see link below.
-$from = "2022-01-01"; // For stock price history. (optional, can be empty)
-$to = "2022-12-31"; // For stock price history. (optional, can be empty)
-$maxCount = "10"; // 10 default. year=20 max, r12 & quarter=40 max. (optional, can be empty)
-$maxYearCount = "2"; // 10 default, 20 max.
-$maxR12QCount = "2"; // 10 default, 40 max.
+$from = "2022-01-01"; // For stock price history. (optional)
+$to = "2022-12-31"; // For stock price history. (optional)
+$maxCount = "10"; // 10 default. year=20 max, r12 & quarter=40 max. (optional)
+$maxYearCount = "2"; // 10 default, 20 max. (optional)
+$maxR12QCount = "2"; // 10 default, 40 max. (optional)
 $date = "2023-08-15"; // For stockprices date.
 $instList = "2,3,6"; // List of instrument id's.
 
