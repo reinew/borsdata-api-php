@@ -34,7 +34,9 @@ require_once 'BorsdataAPI.php';
 $borsdata = new BorsdataAPI();
 
 // Test parameters for functions.
-$option = "instruments"; // Options: branches, countries, markets, sectors, instruments, translationmetadata
+$instrumentsOption = "instruments"; // Options: branches, countries, markets, sectors, instruments, translationmetadata
+$holdingsOption = "insider"; // Options: insider, shorts, buyback
+$calendarOption = "report"; // Options: report, dividend
 $insId = "2"; // Get all different id's with the "getAllInstruments('instruments')" function.
 $kpiId = "1"; // Get all different id's with the "getKpiMetadata()" function.
 $reportType = "year"; // Options: year, quarter, r12
@@ -46,7 +48,7 @@ $to = "2022-12-31"; // For stock price history. (optional)
 $maxCount = "10"; // 10 default. year=20 max, r12 & quarter=40 max. (optional)
 $maxYearCount = "2"; // 10 default, 20 max. (optional)
 $maxR12QCount = "2"; // 10 default, 40 max. (optional)
-$date = "2023-08-15"; // For stockprices date.
+$date = "2023-11-21"; // For stockprices date.
 $instList = "2,3,6"; // List of instrument id's.
 
 // Examples for getting data from the different functions and print out the resulting array.
@@ -55,39 +57,48 @@ $instList = "2,3,6"; // List of instrument id's.
 
 $result = match ($function) {
 
+  // Instrument Meta: https://github.com/Borsdata-Sweden/API/wiki/Instruments
+  1 => $borsdata->getAllInstruments($instrumentsOption),
+
+  // Holdings: https://github.com/Borsdata-Sweden/API/wiki/Holdings
+  2 => $borsdata->getHoldings($holdingsOption, $instList),
+
   // Instruments: https://github.com/Borsdata-Sweden/API/wiki/Instruments
-  1 => $borsdata->getAllInstruments($option),
-  2 => $borsdata->getAllGlobalInstruments(),
-  3 => $borsdata->getAllUpdatedInstruments(),
+  3 => $borsdata->getAllGlobalInstruments(),
+  4 => $borsdata->getAllUpdatedInstruments(),
+  5 => $borsdata->getInstrumentDescriptions($instList),
+
+  // Calendar: https://github.com/Borsdata-Sweden/API/wiki/Calendar
+  6 => $borsdata->getCalendar($calendarOption, $instList),
 
   // KPI History: https://github.com/Borsdata-Sweden/API/wiki/KPI-History
-  4 => $borsdata->getKpiHistory($insId, $kpiId, $reportType, $priceType, $maxCount),
-  5 => $borsdata->getKpiSummary($insId, $reportType, $maxCount),
-  6 => $borsdata->getHistoricalKpis($kpiId, $reportType, $priceType, $instList),
+  7 => $borsdata->getKpiHistory($insId, $kpiId, $reportType, $priceType, $maxCount),
+  8 => $borsdata->getKpiSummary($insId, $reportType, $maxCount),
+  9 => $borsdata->getHistoricalKpis($kpiId, $reportType, $priceType, $instList),
 
   // KPI Screener: https://github.com/Borsdata-Sweden/API/wiki/KPI-Screener
-  7 => $borsdata->getKpidataForOneInstrument($insId, $kpiId, $calcGroup, $calc),
-  8 => $borsdata->getKpidataForAllInstruments($kpiId, $calcGroup, $calc),
-  9 => $borsdata->getKpidataForAllGlobalInstruments($kpiId, $calcGroup, $calc),
-  10 => $borsdata->getKpiUpdated(),
-  11 => $borsdata->getKpiMetadata(),
+  10 => $borsdata->getKpidataForOneInstrument($insId, $kpiId, $calcGroup, $calc),
+  11 => $borsdata->getKpidataForAllInstruments($kpiId, $calcGroup, $calc),
+  12 => $borsdata->getKpidataForAllGlobalInstruments($kpiId, $calcGroup, $calc),
+  13 => $borsdata->getKpiUpdated(),
+  14 => $borsdata->getKpiMetadata(),
 
   // Reports: https://github.com/Borsdata-Sweden/API/wiki/Reports
-  12 => $borsdata->getReportsByType($insId, $reportType, $maxCount),
-  13 => $borsdata->getReportsForAllTypes($insId, $maxYearCount, $maxR12QCount),
-  14 => $borsdata->getReportsMetadata(),
-  15 => $borsdata->getAllReports($instList, $maxYearCount, $maxR12QCount),
+  15 => $borsdata->getReportsByType($insId, $reportType, $maxCount),
+  16 => $borsdata->getReportsForAllTypes($insId, $maxYearCount, $maxR12QCount),
+  17 => $borsdata->getReportsMetadata(),
+  18 => $borsdata->getAllReports($instList, $maxYearCount, $maxR12QCount),
 
   // Stock price: https://github.com/Borsdata-Sweden/API/wiki/Stockprice
-  16 => $borsdata->getStockpricesForInstrument($insId, $from, $to, $maxCount),
-  17 => $borsdata->getStockPricesForListOfInstruments($instList, $from, $to),
-  18 => $borsdata->getLastStockprices(),
-  19 => $borsdata->getLastGlobalStockprices(),
-  20 => $borsdata->getStockpricesForDate($date),
-  21 => $borsdata->getGlobalStockpricesForDate($date),
+  19 => $borsdata->getStockpricesForInstrument($insId, $from, $to, $maxCount),
+  20 => $borsdata->getStockPricesForListOfInstruments($instList, $from, $to),
+  21 => $borsdata->getLastStockprices(),
+  22 => $borsdata->getLastGlobalStockprices(),
+  23 => $borsdata->getStockpricesForDate($date),
+  24 => $borsdata->getGlobalStockpricesForDate($date),
 
   // Stock splits: Max 1 year history.
-  22 => $borsdata->getStocksplits(),
+  25 => $borsdata->getStocksplits(),
 
   default => "No function selected\n",
 };

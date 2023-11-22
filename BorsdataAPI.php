@@ -3,7 +3,7 @@
 /**
  * @author ReineW
  * @license MIT
- * @link https://github.com/reinew/borsdata-api
+ * @link https://github.com/reinew/borsdata-api-php
  *
  * This class is a PHP wrapper for easily interacting with Borsdata API.
  *
@@ -14,7 +14,6 @@
 
 class BorsdataAPI
 {
-
   private $BASE_URL = 'https://apiservice.borsdata.se';
   private $VERSION = 'v1';
   private $key; // API key.
@@ -79,19 +78,43 @@ class BorsdataAPI
    * 'countries' - Returns all countries for nordic. \
    * 'markets' - Returns all markets. \
    * 'sectors' - Returns all sectors. \
-   * 'translationmetadata' - Returns language translations for bransch, sector and country.
+   * 'translationmetadata' - Returns language translations for bransch, sector or country.
    *
    * @param string $option API option.
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Instruments
    */
-  function getAllInstruments(string $option)
+  function getAllInstruments(string $instrumentsOption)
   {
     $queryParams = [
       'authKey' => $this->key,
     ];
 
-    $requestUrl = "$option?" . http_build_query($queryParams);
+    $requestUrl = "$instrumentsOption?" . http_build_query($queryParams);
+
+    return $this->getDataFromApi($requestUrl);
+  }
+
+  /** This function returns Holdings data in the nordic for a list of instruments. (Require Pro+) \
+   * \
+   * Choose one of the following API options: \
+   * 'insider' - Returns holdings insider. \
+   * 'shorts' - Returns holdings short. \
+   * 'buyback' - Returns holdings buyback.
+   *
+   * @param string $holdingsOption API option.
+   * @param string $instList Comma separated list of instrument id's. (Max 50)  (Get all different id's with the getAllInstruments('instruments') function.)
+   * @return object array with JSON data.
+   * @link https://github.com/Borsdata-Sweden/API/wiki/Holdings
+   */
+  function getHoldings(string $holdingsOption, string $instList)
+  {
+    $queryParams = [
+      'authKey' => $this->key,
+      'instList' => $instList,
+    ];
+
+    $requestUrl = "holdings/$holdingsOption?" . http_build_query($queryParams);
 
     return $this->getDataFromApi($requestUrl);
   }
@@ -122,6 +145,40 @@ class BorsdataAPI
     ];
 
     $requestUrl = "instruments/updated?" . http_build_query($queryParams);
+
+    return $this->getDataFromApi($requestUrl);
+  }
+
+  /** This function returns descriptions for a list of instruments.
+   * @param string $instList Comma separated list of instrument id's. (Max 50)  (Get all different id's with the getAllInstruments('instruments') function.)
+   * @return object array with JSON data.
+   * @link https://github.com/Borsdata-Sweden/API/wiki/Instruments
+   */
+  function getInstrumentDescriptions(string $instList)
+  {
+    $queryParams = [
+      'authKey' => $this->key,
+      'instList' => $instList,
+    ];
+
+    $requestUrl = "instruments/description?" . http_build_query($queryParams);
+
+    return $this->getDataFromApi($requestUrl);
+  }
+
+  /** This function returns calendar data for the nordic market.
+   * @param string $calendarOption Calendar option. (report, dividend)
+   * @return object array with JSON data.
+   * @link https://github.com/Borsdata-Sweden/API/wiki/Calendar
+   */
+  function getCalendar(string $calendarOption, string $instList)
+  {
+    $queryParams = [
+      'authKey' => $this->key,
+      'instList' => $instList,
+    ];
+
+    $requestUrl = "instruments/$calendarOption/calendar?" . http_build_query($queryParams);
 
     return $this->getDataFromApi($requestUrl);
   }
@@ -345,10 +402,6 @@ class BorsdataAPI
 
     return $this->getDataFromApi($requestUrl);
   }
-  // {
-  //   $requestUrl = "instruments/reports/metadata?authKey=$this->key";
-  //   return $this->getDataFromApi($requestUrl);
-  // }
 
   /** This function returns reports for list of instruments with all report types included. (year, r12, quarter)
    * @param string $instList Comma separated list of instrument id's. (Max 50) (Get all different id's with the "getAllInstruments('instruments')" function.)
