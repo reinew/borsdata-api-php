@@ -12,16 +12,14 @@
  * All code contained herein are provided to you “AS IS” without any warranties of any kind.
  */
 
-class BorsdataAPI
-{
+class BorsdataAPI {
   private $BASE_URL = 'https://apiservice.borsdata.se';
   private $VERSION = 'v1';
   private $key; // API key.
   private $SLEEP = 0.11; // Max 100 requests allowed per 10s.
 
   /** Getting the API key from the .env file. */
-  public function __construct()
-  {
+  public function __construct() {
     try {
       $envFile = __DIR__ . '/.env';
       if (!file_exists($envFile)) {
@@ -40,8 +38,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @throws error API error.
    */
-  function getDataFromApi(string $requestUrl)
-  {
+  function getDataFromApi(string $requestUrl) {
     $url = $this->BASE_URL . '/' . $this->VERSION . '/' . $requestUrl;
 
     $context = stream_context_create([
@@ -84,8 +81,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Instruments
    */
-  function getAllInstruments(string $instrumentsOption)
-  {
+  function getAllInstruments(string $instrumentsOption) {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -107,8 +103,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Holdings
    */
-  function getHoldings(string $holdingsOption, string $instList)
-  {
+  function getHoldings(string $holdingsOption, string $instList) {
     $queryParams = [
       'authKey' => $this->key,
       'instList' => $instList,
@@ -123,8 +118,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Instruments
    */
-  function getAllGlobalInstruments()
-  {
+  function getAllGlobalInstruments() {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -138,8 +132,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Instruments
    */
-  function getAllUpdatedInstruments()
-  {
+  function getAllUpdatedInstruments() {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -154,8 +147,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Instruments
    */
-  function getInstrumentDescriptions(string $instList)
-  {
+  function getInstrumentDescriptions(string $instList) {
     $queryParams = [
       'authKey' => $this->key,
       'instList' => $instList,
@@ -171,8 +163,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Calendar
    */
-  function getCalendar(string $calendarOption, string $instList)
-  {
+  function getCalendar(string $calendarOption, string $instList) {
     $queryParams = [
       'authKey' => $this->key,
       'instList' => $instList,
@@ -192,8 +183,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/KPI-History
    */
-  function getKpiHistory(int $insId, int $kpiId, string $reportType, string $priceType, int $maxCount = null)
-  {
+  function getKpiHistory(int $insId, int $kpiId, string $reportType, string $priceType, int $maxCount = null) {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -214,8 +204,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/KPI-History
    */
-  function getKpiSummary(int $insId, string $reportType, int $maxCount = null)
-  {
+  function getKpiSummary(int $insId, string $reportType, int $maxCount = null) {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -238,8 +227,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/KPI-History
    */
-  function getHistoricalKpis(int $kpiId, string $reportType, string $priceType, string $instList, int $maxCount = null)
-  {
+  function getHistoricalKpis(int $kpiId, string $reportType, string $priceType, string $instList, int $maxCount = null) {
     $queryParams = [
       'authKey' => $this->key,
       'instList' => $instList,
@@ -262,8 +250,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/KPI-Screener
    */
-  function getKpidataForOneInstrument(int $insId, int $kpiId, string $calcGroup, string $calc)
-  {
+  function getKpidataForOneInstrument(int $insId, int $kpiId, string $calcGroup, string $calc) {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -280,8 +267,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/KPI-Screener
    */
-  function getKpidataForAllInstruments(int $kpiId, string $calcGroup, string $calc)
-  {
+  function getKpidataForAllInstruments(int $kpiId, string $calcGroup, string $calc) {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -298,8 +284,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/KPI-Screener
    */
-  function getKpidataForAllGlobalInstruments(int $kpiId, string $calcGroup, string $calc)
-  {
+  function getKpidataForAllGlobalInstruments(int $kpiId, string $calcGroup, string $calc) {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -313,8 +298,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/KPI-Screener
    */
-  function getKpiUpdated()
-  {
+  function getKpiUpdated() {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -328,8 +312,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/KPI-Screener
    */
-  function getKpiMetadata()
-  {
+  function getKpiMetadata() {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -346,8 +329,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Reports
    */
-  function getReportsByType(int $insId, string $reportType, int $maxCount = null)
-  {
+  function getReportsByType(int $insId, string $reportType, int $maxCount = null) {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -369,8 +351,7 @@ class BorsdataAPI
    * @link https://github.com/Borsdata-Sweden/API/wiki/Reports
    */
   // function getReportsForAllTypes($insId, $maxYearCount, $maxR12QCount)
-  function getReportsForAllTypes(int $insId, int $maxYearCount = null, int $maxR12QCount = null)
-  {
+  function getReportsForAllTypes(int $insId, int $maxYearCount = null, int $maxR12QCount = null) {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -392,8 +373,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Reports
    */
-  function getReportsMetadata()
-  {
+  function getReportsMetadata() {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -410,8 +390,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Reports
    */
-  function getAllReports(string $instList, int $maxYearCount = null, int $maxR12QCount = null)
-  {
+  function getAllReports(string $instList, int $maxYearCount = null, int $maxR12QCount = null) {
     $queryParams = [
       'authKey' => $this->key,
       'instList' => $instList,
@@ -438,8 +417,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Stockprice
    */
-  function getStockpricesForInstrument(int $insId, string $from = null, string $to = null, int $maxCount = null)
-  {
+  function getStockpricesForInstrument(int $insId, string $from = null, string $to = null, int $maxCount = null) {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -468,8 +446,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Stockprice
    */
-  function getStockPricesForListOfInstruments(string $instList, string $from = null, string $to = null)
-  {
+  function getStockPricesForListOfInstruments(string $instList, string $from = null, string $to = null) {
     $queryParams = [
       'authKey' => $this->key,
       'instList' => $instList,
@@ -492,8 +469,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Stockprice
    */
-  function getLastStockprices()
-  {
+  function getLastStockprices() {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -507,8 +483,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Stockprice
    */
-  function getLastGlobalStockprices()
-  {
+  function getLastGlobalStockprices() {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -523,8 +498,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Stockprice
    */
-  function getStockpricesForDate(string $date)
-  {
+  function getStockpricesForDate(string $date) {
     $queryParams = [
       'authKey' => $this->key,
       'date' => $date,
@@ -540,8 +514,7 @@ class BorsdataAPI
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Stockprice
    */
-  function getGlobalStockpricesForDate(string $date)
-  {
+  function getGlobalStockpricesForDate(string $date) {
     $queryParams = [
       'authKey' => $this->key,
       'date' => $date,
@@ -555,11 +528,14 @@ class BorsdataAPI
   /** This function returns stock splits for all nordic instruments. Max 1 year history.
    * @return object array with JSON data.
    */
-  function getStocksplits()
-  {
+  function getStocksplits(string $from = null) {
     $queryParams = [
       'authKey' => $this->key,
     ];
+
+    if ($from !== null) {
+      $queryParams['from'] = $from;
+    }
 
     $requestUrl = "instruments/StockSplits?" . http_build_query($queryParams);
 

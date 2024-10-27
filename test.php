@@ -10,7 +10,7 @@
  * The creator cannot guarantee or imply reliability, serviceability, or function of this class.
  * All code contained herein are provided to you “AS IS” without any warranties of any kind.
  *
- * Give input from command line or url to choose function 1-22.
+ * Give input from command line or url to choose function 1-25.
  * $: php test.php <number of the function>
  * http(s)://<base_url>/test.php?function=<number of the function>
  */
@@ -43,12 +43,12 @@ $reportType = "year"; // Options: year, quarter, r12
 $priceType = "mean"; // Options: low, mean, high
 $calcGroup = "last"; // For KPI-Screener, for more info about the parameter, see link below.
 $calc = "latest"; // For KPI-Screener, for more info about the parameter, see link below.
-$from = "2022-01-01"; // For stock price history. (optional)
-$to = "2022-12-31"; // For stock price history. (optional)
+$from = "2024-01-01"; // For stock price history. (optional)
+$to = "2024-10-25"; // For stock price history. (optional)
 $maxCount = "10"; // 10 default. year=20 max, r12 & quarter=40 max. (optional)
 $maxYearCount = "2"; // 10 default, 20 max. (optional)
 $maxR12QCount = "2"; // 10 default, 40 max. (optional)
-$date = "2023-11-21"; // For stockprices date.
+$date = "2024-10-25"; // For stockprices date.
 $instList = "2,3,6"; // List of instrument id's.
 
 // Examples for getting data from the different functions and print out the resulting array.
@@ -97,8 +97,8 @@ $result = match ($function) {
   23 => $borsdata->getStockpricesForDate($date),
   24 => $borsdata->getGlobalStockpricesForDate($date),
 
-  // Stock splits: Max 1 year history.
-  25 => $borsdata->getStocksplits(),
+  // Stock splits:
+  25 => $borsdata->getStocksplits($from),
 
   default => "No function selected\n",
 };
