@@ -50,6 +50,7 @@ $maxYearCount = "2"; // 10 default, 20 max. (optional)
 $maxR12QCount = "2"; // 10 default, 40 max. (optional)
 $date = "2024-10-25"; // For stockprices date.
 $instList = "2,3,6"; // List of instrument id's.
+$original = "1"; // get original report data currency. (optional) {0, 1}
 
 // Examples for getting data from the different functions and print out the resulting array.
 // All parameters in the function is required for the function to work properly.
@@ -84,10 +85,10 @@ $result = match ($function) {
   14 => $borsdata->getKpiMetadata(),
 
   // Reports: https://github.com/Borsdata-Sweden/API/wiki/Reports
-  15 => $borsdata->getReportsByType($insId, $reportType, $maxCount),
-  16 => $borsdata->getReportsForAllTypes($insId, $maxYearCount, $maxR12QCount),
+  15 => $borsdata->getReportsByType($insId, $reportType, $maxCount, $original),
+  16 => $borsdata->getReportsForAllTypes($insId, $maxYearCount, $maxR12QCount, $original),
   17 => $borsdata->getReportsMetadata(),
-  18 => $borsdata->getAllReports($instList, $maxYearCount, $maxR12QCount),
+  18 => $borsdata->getAllReports($instList, $maxYearCount, $maxR12QCount, $original),
 
   // Stock price: https://github.com/Borsdata-Sweden/API/wiki/Stockprice
   19 => $borsdata->getStockpricesForInstrument($insId, $from, $to, $maxCount),

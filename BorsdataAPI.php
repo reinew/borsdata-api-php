@@ -326,16 +326,21 @@ class BorsdataAPI {
    * @param int $insId Instrument id. (Get all different id's with the "getAllInstruments('instruments')" function.)
    * @param string $reportType Report type. (year, r12, quarter)
    * @param int $maxCount Max number of results returned. (Max Year=20, R12&Quarter=40) (optional)
+   * @param int $original Get original report data currency. (optional) {0, 1}
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Reports
    */
-  function getReportsByType(int $insId, string $reportType, int $maxCount = null) {
+  function getReportsByType(int $insId, string $reportType, int $maxCount = null, int $original = null) {
     $queryParams = [
       'authKey' => $this->key,
     ];
 
     if ($maxCount !== null) {
       $queryParams['maxCount'] = $maxCount;
+    }
+
+    if ($original !== null) {
+      $queryParams['original'] = $original;
     }
 
     $requestUrl = "instruments/$insId/reports/$reportType?" . http_build_query($queryParams);
@@ -347,11 +352,12 @@ class BorsdataAPI {
    * @param int $insId Instrument id. (Get all different id's with the "getAllInstruments('instruments')" function.)
    * @param int $maxYearCount Max number of year reports returned. (10 year default, max 20) (Optional)
    * @param int $maxR12QCount Max number of r12 and quarter reports returned. (10 default, max 40) (Optional)
+   * @param int $original Get original report data currency. (optional) {0, 1}
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Reports
    */
   // function getReportsForAllTypes($insId, $maxYearCount, $maxR12QCount)
-  function getReportsForAllTypes(int $insId, int $maxYearCount = null, int $maxR12QCount = null) {
+  function getReportsForAllTypes(int $insId, int $maxYearCount = null, int $maxR12QCount = null, int $original = null) {
     $queryParams = [
       'authKey' => $this->key,
     ];
@@ -362,6 +368,10 @@ class BorsdataAPI {
 
     if ($maxR12QCount !== null) {
       $queryParams['maxR12QCount'] = $maxR12QCount;
+    }
+
+    if ($original !== null) {
+      $queryParams['original'] = $original;
     }
 
     $requestUrl = "instruments/$insId/reports?" . http_build_query($queryParams);
@@ -387,10 +397,11 @@ class BorsdataAPI {
    * @param string $instList Comma separated list of instrument id's. (Max 50) (Get all different id's with the "getAllInstruments('instruments')" function.)
    * @param int $maxYearCount Max number of year reports returned. (10 year default, max 20) (Optional)
    * @param int $maxR12QCount Max number of r12 and quarter reports returned. (10 default, max 40) (Optional)
+   * @param int $original Get original report data currency. (optional) {0, 1}
    * @return object array with JSON data.
    * @link https://github.com/Borsdata-Sweden/API/wiki/Reports
    */
-  function getAllReports(string $instList, int $maxYearCount = null, int $maxR12QCount = null) {
+  function getAllReports(string $instList, int $maxYearCount = null, int $maxR12QCount = null, int $original = null) {
     $queryParams = [
       'authKey' => $this->key,
       'instList' => $instList,
@@ -402,6 +413,10 @@ class BorsdataAPI {
 
     if ($maxR12QCount !== null) {
       $queryParams['maxR12QCount'] = $maxR12QCount;
+    }
+
+    if ($original !== null) {
+      $queryParams['original'] = $original;
     }
 
     $requestUrl = "instruments/reports?" . http_build_query($queryParams);
